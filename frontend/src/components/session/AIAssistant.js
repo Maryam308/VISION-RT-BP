@@ -1,4 +1,3 @@
-// src/components/session/AIAssistant.js
 import React from 'react';
 import { Sparkles, Copy } from 'lucide-react';
 
@@ -10,37 +9,33 @@ const AIAssistant = ({ sessionState }) => {
   ];
 
   return (
-    <div className="p-4 bg-white">
+    <div className="ai-assistant-content">
       <button
         disabled={sessionState === 'ready'}
-        className={`w-full flex items-center justify-center space-x-2 px-4 py-3 rounded-lg font-semibold transition mb-4 ${
-          sessionState === 'ready'
-            ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-            : 'bg-blue-600 text-white hover:bg-blue-700'
-        }`}
+        className={`generate-questions-btn ${sessionState === 'ready' ? 'disabled' : ''}`}
       >
-        <Sparkles className="h-5 w-5" />
+        <Sparkles className="btn-icon" />
         <span>Generate Questions</span>
       </button>
 
       {sessionState === 'recording' && (
-        <div className="space-y-2">
-          <p className="text-sm font-medium text-gray-700 mb-3">Suggested Questions:</p>
+        <div className="suggested-questions">
+          <p className="suggestions-title">Suggested Questions:</p>
           {suggestedQuestions.map((question, index) => {
             const borderColor = {
-              red: 'border-l-red-500',
-              yellow: 'border-l-yellow-500',
-              green: 'border-l-green-500',
+              red: 'border-left-red',
+              yellow: 'border-left-yellow',
+              green: 'border-left-green',
             }[question.color];
 
             return (
               <div
                 key={index}
-                className={`border-l-4 ${borderColor} bg-gray-50 p-3 rounded-r-lg`}
+                className={`question-card ${borderColor}`}
               >
-                <p className="text-sm text-gray-800 mb-2">{question.text}</p>
-                <button className="flex items-center space-x-1 text-xs text-gray-600 hover:text-gray-900 transition">
-                  <Copy className="h-3 w-3" />
+                <p className="question-text">{question.text}</p>
+                <button className="copy-question-btn">
+                  <Copy className="btn-icon" />
                   <span>Copy</span>
                 </button>
               </div>
@@ -50,7 +45,7 @@ const AIAssistant = ({ sessionState }) => {
       )}
 
       {sessionState === 'ready' && (
-        <p className="text-sm text-gray-500 text-center py-4">
+        <p className="ai-placeholder">
           Start recording to generate questions
         </p>
       )}

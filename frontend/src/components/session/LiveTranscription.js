@@ -1,4 +1,3 @@
-// src/components/session/LiveTranscription.js
 import React from 'react';
 import { FileText, Download, Copy } from 'lucide-react';
 
@@ -10,37 +9,37 @@ const LiveTranscription = () => {
   ];
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center space-x-2">
-          <FileText className="h-5 w-5 text-blue-600" />
-          <h3 className="text-lg font-bold text-gray-900">Live Transcription</h3>
+    <div className="transcription-card">
+      <div className="card-header">
+        <div className="header-left">
+          <FileText className="header-icon" />
+          <h3 className="card-title">Live Transcription</h3>
         </div>
-        <div className="flex items-center space-x-2">
-          <span className="h-2 w-2 bg-red-500 rounded-full animate-pulse"></span>
-          <span className="text-sm font-medium text-red-500">Recording</span>
+        <div className="recording-status">
+          <span className="recording-dot"></span>
+          <span>Recording</span>
         </div>
       </div>
 
-      <div className="bg-gray-50 rounded-lg p-4 space-y-3 min-h-[200px] max-h-[400px] overflow-y-auto mb-4">
+      <div className="transcript-container">
         {transcriptLines.map((line, index) => (
-          <div key={index} className="text-sm font-mono">
-            <span className="text-gray-500">{line.time}</span>{' '}
-            <span className="font-semibold text-gray-700">[{line.speaker}]</span>{' '}
-            <span className="text-gray-600">{line.language}:</span>{' '}
-            <span className="text-gray-900">{line.text}</span>
+          <div key={index} className="transcript-line">
+            <span className="timestamp">{line.time}</span>{' '}
+            <span className="speaker">[{line.speaker}]</span>{' '}
+            <span className="language">{line.language}:</span>{' '}
+            <span className="text">{line.text}</span>
           </div>
         ))}
       </div>
 
-      <div className="flex space-x-3">
-        <button className="flex items-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition">
-          <Download className="h-4 w-4" />
-          <span className="text-sm font-medium">Download</span>
+      <div className="action-buttons">
+        <button className="action-btn">
+          <Download className="btn-icon" />
+          <span>Download</span>
         </button>
-        <button className="flex items-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition">
-          <Copy className="h-4 w-4" />
-          <span className="text-sm font-medium">Copy All</span>
+        <button className="action-btn">
+          <Copy className="btn-icon" />
+          <span>Copy All</span>
         </button>
       </div>
     </div>

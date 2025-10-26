@@ -1,14 +1,12 @@
-// src/components/session/RealTimeView.js
 import React, { useState } from 'react';
 import { Play, FileText, User, MessageSquare, ChevronUp, ChevronDown } from 'lucide-react';
 import LiveTranscription from './LiveTranscription';
 import Translation from './Translation';
-import IdentityVerification from './IdentityVerification';
 import AIAssistant from './AIAssistant';
 import SessionInfo from './SessionInfo';
 
 const RealTimeView = ({ sessionState, setSessionState, sessionData }) => {
-  const [activeTab, setActiveTab] = useState(null); // null, 'transcription', 'identity'
+  const [activeTab, setActiveTab] = useState(null);
   const [aiExpanded, setAiExpanded] = useState(false);
 
   const handleStartRecording = () => {
@@ -17,26 +15,23 @@ const RealTimeView = ({ sessionState, setSessionState, sessionData }) => {
   };
 
   return (
-    <div className="flex">
-      {/* Left Main Content */}
-      <div className="flex-1 p-6">
+    <div className="realtime-view">
+      <div className="main-content">
         {sessionState === 'ready' && (
-          <div className="flex items-center justify-center min-h-[600px]">
-            <div className="text-center">
-              <div className="mb-8">
-                <div className="inline-flex items-center justify-center w-32 h-32 bg-gray-200 rounded-full mb-6">
-                  <Play className="h-16 w-16 text-gray-400" />
-                </div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">Ready to Start</h2>
-                <p className="text-gray-600 mb-8">
-                  Click the button below to begin recording the investigation session.
-                </p>
+          <div className="ready-state">
+            <div className="ready-content">
+              <div className="play-icon-container">
+                <Play className="play-icon" />
               </div>
+              <h2 className="ready-title">Ready to Start</h2>
+              <p className="ready-description">
+                Click the button below to begin recording the investigation session.
+              </p>
               <button
                 onClick={handleStartRecording}
-                className="inline-flex items-center space-x-2 px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition shadow-lg"
+                className="start-recording-btn"
               >
-                <Play className="h-5 w-5" />
+                <Play className="btn-icon" />
                 <span>Start Recording</span>
               </button>
             </div>
@@ -44,70 +39,47 @@ const RealTimeView = ({ sessionState, setSessionState, sessionData }) => {
         )}
 
         {sessionState === 'recording' && (
-          <div className="space-y-6">
-            {/* Content based on active tab */}
+          <div className="recording-content">
             {activeTab === 'transcription' && (
               <>
                 <LiveTranscription />
                 <Translation />
               </>
             )}
-            {activeTab === 'identity' && <IdentityVerification />}
           </div>
         )}
       </div>
 
-      {/* Right Sidebar */}
-      <div className="w-96 bg-white border-l border-gray-200 p-6 space-y-4">
-        {/* Navigation Buttons */}
-        <div className="space-y-2">
+      <div className="session-sidebar">
+        <div className="sidebar-nav">
           <button
             onClick={() => setActiveTab('transcription')}
-            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition ${
-              activeTab === 'transcription'
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
-            }`}
+            className={`sidebar-btn ${activeTab === 'transcription' ? 'active' : ''} ${sessionState === 'ready' ? 'disabled' : ''}`}
             disabled={sessionState === 'ready'}
           >
-            <FileText className="h-5 w-5" />
+            <FileText className="btn-icon" />
             <span>Transcription & Translation</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('identity')}
-            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition ${
-              activeTab === 'identity'
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
-            }`}
-            disabled={sessionState === 'ready'}
-          >
-            <User className="h-5 w-5" />
-            <span>Identity Verification</span>
           </button>
         </div>
 
-        {/* AI Assistant Section */}
-        <div className="border border-gray-200 rounded-lg overflow-hidden">
+        <div className="ai-assistant-section">
           <button
             onClick={() => setAiExpanded(!aiExpanded)}
-            className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition"
+            className="ai-toggle-btn"
           >
-            <div className="flex items-center space-x-2">
-              <MessageSquare className="h-5 w-5 text-blue-600" />
-              <span className="font-medium text-gray-900">AI Assistant</span>
+            <div className="ai-toggle-header">
+              <MessageSquare className="btn-icon" />
+              <span>AI Assistant</span>
             </div>
             {aiExpanded ? (
-              <ChevronUp className="h-5 w-5 text-gray-500" />
+              <ChevronUp className="chevron-icon" />
             ) : (
-              <ChevronDown className="h-5 w-5 text-gray-500" />
+              <ChevronDown className="chevron-icon" />
             )}
           </button>
           {aiExpanded && <AIAssistant sessionState={sessionState} />}
         </div>
 
-        {/* Session Info */}
         <SessionInfo sessionData={sessionData} />
       </div>
     </div>

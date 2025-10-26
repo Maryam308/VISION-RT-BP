@@ -14,6 +14,7 @@ const WitnessInfo = ({ witnessData, onWitnessDataChange }) => {
             onChange={(e) => onWitnessDataChange("fullName", e.target.value)}
             placeholder="Enter witness full name"
             className="form-input"
+            required
           />
         </div>
 

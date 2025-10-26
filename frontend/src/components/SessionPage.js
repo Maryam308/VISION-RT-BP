@@ -1,23 +1,26 @@
-// src/components/SessionPage.js
 import React, { useState } from 'react';
 import { ArrowLeft, Clock } from 'lucide-react';
 import RealTimeView from './session/RealTimeView';
 import ProcessingView from './session/ProcessingView';
 import SessionSummaryModal from './session/SessionSummaryModal';
 
-const SessionPage = ({ user, onSignOut }) => {
-  const [activeMainTab, setActiveMainTab] = useState('real-time'); // 'real-time' or 'processing'
-  const [sessionState, setSessionState] = useState('ready'); // 'ready', 'recording', 'completed'
+const SessionPage = ({ user, onSignOut, sessionData, onEndSession }) => {
+  const [activeMainTab, setActiveMainTab] = useState('real-time');
+  const [sessionState, setSessionState] = useState('ready');
   const [showSummaryModal, setShowSummaryModal] = useState(false);
 
-  const sessionData = {
+  const currentSessionData = sessionData || {
     sessionId: '#2024-INV-0042',
     investigator: 'M. AlZebari',
     language: 'Arabic',
-    duration: '15:23',
+    duration: '00:00',
     witness: 'Not set',
     status: 'Active'
   };
+
+  if (sessionData?.witnessData?.fullName) {
+    currentSessionData.witness = sessionData.witnessData.fullName;
+  }
 
   const handleEndSession = () => {
     setSessionState('completed');
@@ -27,64 +30,63 @@ const SessionPage = ({ user, onSignOut }) => {
   const handleCloseSummary = () => {
     setShowSummaryModal(false);
     setSessionState('ready');
+    if (onEndSession) {
+      onEndSession();
+    }
   };
 
   const handleBackToHome = () => {
-    onSignOut();
+    if (onEndSession) {
+      onEndSession();
+    } else {
+      onSignOut();
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Top Navigation Bar */}
-      <nav className="bg-white border-b border-gray-200">
-        <div className="max-w-full px-6 py-4">
-          <div className="flex items-center justify-between">
-            {/* Back Button */}
+    <div className="session-page-container">
+      <nav className="session-nav">
+        <div className="nav-content">
+          <div className="nav-items">
             <button
               onClick={handleBackToHome}
-              className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 transition"
+              className="back-button"
             >
-              <ArrowLeft className="h-5 w-5" />
-              <span className="font-medium">Back to Home</span>
+              <ArrowLeft className="icon" />
+              <span>Back to Home</span>
             </button>
 
-            {/* Center - Logo and Session Info */}
-            <div className="text-center">
-              <h1 className="text-3xl font-bold text-blue-600 mb-1">VISION-RT</h1>
-              <div className="flex items-center justify-center space-x-3">
-                <span className="text-gray-600 text-sm">Session</span>
-                <span className="font-bold text-gray-900">{sessionData.sessionId}</span>
+            <div className="nav-center">
+              <h1 className="app-logo-text">VISION-RT</h1>
+              <div className="session-info-header">
+                <span className="session-label">Session</span>
+                <span className="session-id">{currentSessionData.sessionId}</span>
                 {sessionState === 'recording' && (
-                  <span className="flex items-center space-x-1 text-red-500">
-                    <span className="h-2 w-2 bg-red-500 rounded-full animate-pulse"></span>
-                    <span className="text-sm font-medium">LIVE</span>
+                  <span className="live-indicator">
+                    <span className="live-dot"></span>
+                    <span>LIVE</span>
                   </span>
                 )}
               </div>
-              <p className="text-sm text-gray-600 mt-1">
-                Investigator: {sessionData.investigator}
+              <p className="investigator-info">
+                Investigator: {currentSessionData.investigator}
               </p>
             </div>
 
-            {/* Right - Language, Time, End Session */}
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 bg-gray-100 px-3 py-1.5 rounded-lg">
-                <span className="text-sm text-gray-600">Language:</span>
-                <button className="px-3 py-1 bg-white text-blue-600 font-medium rounded border border-gray-300 hover:bg-blue-50">
-                  EN
-                </button>
-                <button className="px-3 py-1 text-gray-600 hover:bg-white rounded">
-                  AR
-                </button>
+            <div className="nav-controls">
+              <div className="language-controls">
+                <span className="language-label">Language:</span>
+                <button className="lang-btn active">EN</button>
+                <button className="lang-btn">AR</button>
               </div>
-              <div className="flex items-center space-x-2 text-gray-600">
-                <Clock className="h-5 w-5" />
-                <span className="font-medium">{sessionData.duration}</span>
+              <div className="time-display">
+                <Clock className="icon" />
+                <span>{currentSessionData.duration}</span>
               </div>
               {sessionState === 'recording' && (
                 <button
                   onClick={handleEndSession}
-                  className="px-4 py-2 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600 transition"
+                  className="end-session-btn"
                 >
                   End Session
                 </button>
@@ -94,51 +96,38 @@ const SessionPage = ({ user, onSignOut }) => {
         </div>
       </nav>
 
-      {/* Main Tabs - Real-time / Processing */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-full px-6">
-          <div className="flex justify-center space-x-4 pt-4">
-            <button
-              onClick={() => setActiveMainTab('real-time')}
-              className={`px-8 py-3 font-semibold rounded-t-lg transition ${
-                activeMainTab === 'real-time'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
-            >
-              Real-time
-            </button>
-            <button
-              onClick={() => setActiveMainTab('processing')}
-              className={`px-8 py-3 font-semibold rounded-t-lg transition ${
-                activeMainTab === 'processing'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
-            >
-              Processing
-            </button>
-          </div>
+      <div className="main-tabs-container">
+        <div className="main-tabs">
+          <button
+            onClick={() => setActiveMainTab('real-time')}
+            className={`main-tab ${activeMainTab === 'real-time' ? 'active' : ''}`}
+          >
+            Real-time
+          </button>
+          <button
+            onClick={() => setActiveMainTab('processing')}
+            className={`main-tab ${activeMainTab === 'processing' ? 'active' : ''}`}
+          >
+            Processing
+          </button>
         </div>
       </div>
 
-      {/* Main Content Area */}
-      <div className="max-w-full">
+      <div className="session-main-content">
         {activeMainTab === 'real-time' ? (
           <RealTimeView
             sessionState={sessionState}
             setSessionState={setSessionState}
-            sessionData={sessionData}
+            sessionData={currentSessionData}
           />
         ) : (
-          <ProcessingView sessionData={sessionData} />
+          <ProcessingView sessionData={currentSessionData} />
         )}
       </div>
 
-      {/* Session Summary Modal */}
       {showSummaryModal && (
         <SessionSummaryModal
-          sessionData={sessionData}
+          sessionData={currentSessionData}
           onClose={handleCloseSummary}
         />
       )}

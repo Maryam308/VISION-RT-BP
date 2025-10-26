@@ -1,62 +1,61 @@
-// src/components/session/SessionSummaryModal.js
 import React from 'react';
 import { X, Download, Share2 } from 'lucide-react';
 
 const SessionSummaryModal = ({ sessionData, onClose }) => {
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full">
+    <div className="modal-overlay">
+      <div className="summary-modal">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-900">Session Summary</h2>
+        <div className="modal-header">
+          <h2 className="modal-title">Session Summary</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition"
+            className="close-button"
           >
-            <X className="h-6 w-6" />
+            <X className="icon" />
           </button>
         </div>
 
         {/* Body */}
-        <div className="p-6">
-          <div className="bg-gray-50 rounded-lg p-6 mb-6">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Session Details</h3>
+        <div className="modal-body">
+          <div className="session-details-card">
+            <h3 className="details-title">Session Details</h3>
             
-            <div className="grid grid-cols-2 gap-6">
+            <div className="details-grid">
               {/* Left Column */}
-              <div className="space-y-3">
-                <div>
-                  <p className="text-sm text-gray-500 mb-1">Session ID:</p>
-                  <p className="font-bold text-gray-900">{sessionData.sessionId}</p>
+              <div className="details-column">
+                <div className="detail-item">
+                  <p className="detail-label">Session ID:</p>
+                  <p className="detail-value">{sessionData.sessionId}</p>
                 </div>
-                <div>
-                  <p className="text-sm text-gray-500 mb-1">Duration:</p>
-                  <p className="font-semibold text-gray-900">15 minutes 23 seconds</p>
+                <div className="detail-item">
+                  <p className="detail-label">Duration:</p>
+                  <p className="detail-value">15 minutes 23 seconds</p>
                 </div>
               </div>
 
               {/* Right Column */}
-              <div className="space-y-3">
-                <div>
-                  <p className="text-sm text-gray-500 mb-1">Witness:</p>
-                  <p className="font-bold text-gray-900">Ahmad Khalil</p>
+              <div className="details-column">
+                <div className="detail-item">
+                  <p className="detail-label">Witness:</p>
+                  <p className="detail-value">Ahmad Khalil</p>
                 </div>
-                <div>
-                  <p className="text-sm text-gray-500 mb-1">Status:</p>
-                  <p className="font-semibold text-green-600">Completed</p>
+                <div className="detail-item">
+                  <p className="detail-label">Status:</p>
+                  <p className="status-completed">Completed</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Action Buttons */}
-          <div className="grid grid-cols-2 gap-4">
-            <button className="flex items-center justify-center space-x-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
-              <Download className="h-5 w-5" />
+          <div className="modal-actions">
+            <button className="action-btn primary">
+              <Download className="btn-icon" />
               <span>Download PDF</span>
             </button>
-            <button className="flex items-center justify-center space-x-2 px-6 py-3 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 transition">
-              <Share2 className="h-5 w-5" />
+            <button className="action-btn secondary">
+              <Share2 className="btn-icon" />
               <span>Share Report</span>
             </button>
           </div>

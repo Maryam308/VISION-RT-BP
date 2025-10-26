@@ -6,7 +6,7 @@ import TranslationSettings from "./TranslationSettings";
 
 const SessionSetup = ({ onBackToDashboard, onStartInvestigation }) => {
   const [sessionData, setSessionData] = useState({
-    sessionId: "#2024-NV-0043",
+    sessionId: `#${new Date().getFullYear()}-INV-${Math.floor(1000 + Math.random() * 9000)}`,
     witnessData: {
       fullName: "",
       idNumber: "",
@@ -67,13 +67,21 @@ const SessionSetup = ({ onBackToDashboard, onStartInvestigation }) => {
       return;
     }
 
-    onStartInvestigation(sessionData);
+    const investigationData = {
+      ...sessionData,
+      witness: sessionData.witnessData.fullName,
+      investigator: "M. AlZebari",
+      language: sessionData.translationSettings.sourceLanguage === "ar" ? "Arabic" : "English",
+      duration: "00:00",
+      status: "Ready"
+    };
+
+    onStartInvestigation(investigationData);
   };
 
   return (
     <div className="session-setup-container">
       <div className="session-setup-content">
-        {/* Header */}
         <div className="session-header">
           <h1 className="session-title">Create New Investigation Session</h1>
           <p className="session-id">
@@ -83,7 +91,6 @@ const SessionSetup = ({ onBackToDashboard, onStartInvestigation }) => {
           </p>
         </div>
 
-        {/* Form Sections */}
         <WitnessInfo
           witnessData={sessionData.witnessData}
           onWitnessDataChange={updateWitnessData}
@@ -100,7 +107,6 @@ const SessionSetup = ({ onBackToDashboard, onStartInvestigation }) => {
           onTranslationSettingsChange={updateTranslationSettings}
         />
 
-        {/* Action Buttons */}
         <div className="action-buttons">
           <button onClick={onBackToDashboard} className="btn btn-outline">
             <ArrowLeft size={18} />

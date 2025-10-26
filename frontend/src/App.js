@@ -2,16 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Amplify } from "aws-amplify";
 import Authentication from "./components/Authentication";
 import HomePage from "./components/HomePage";
+import SessionSetup from "./components/SessionSetup/SessionSetup";
 import authService from "./services/authService";
 import awsConfig from "./aws-config";
-
-// Configure Amplify
 Amplify.configure(awsConfig);
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState(null);
+  const [currentView, setCurrentView] = useState("home");
 
   useEffect(() => {
     checkAuthStatus();
@@ -44,6 +44,25 @@ function App() {
   const handleSignOut = () => {
     setIsAuthenticated(false);
     setCurrentUser(null);
+    setCurrentView("home");
+  };
+
+  const handleStartSession = () => {
+    setCurrentView("sessionSetup");
+  };
+
+  const handleBackToDashboard = () => {
+    setCurrentView("home");
+  };
+
+  const handleStartInvestigation = (sessionData) => {
+    console.log("Starting investigation with:", sessionData);
+
+    alert(
+      "Investigation session started with: " + sessionData.witnessData.fullName
+    );
+
+    setCurrentView("home");
   };
 
   if (isLoading) {
@@ -61,8 +80,17 @@ function App() {
     <div className="App">
       {!isAuthenticated ? (
         <Authentication onAuthSuccess={handleAuthSuccess} />
+      ) : currentView === "sessionSetup" ? (
+        <SessionSetup
+          onBackToDashboard={handleBackToDashboard}
+          onStartInvestigation={handleStartInvestigation}
+        />
       ) : (
-        <HomePage user={currentUser} onSignOut={handleSignOut} />
+        <HomePage
+          user={currentUser}
+          onSignOut={handleSignOut}
+          onStartSession={handleStartSession}
+        />
       )}
     </div>
   );

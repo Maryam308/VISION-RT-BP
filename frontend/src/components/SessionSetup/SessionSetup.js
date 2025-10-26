@@ -3,10 +3,10 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import WitnessInfo from "./WitnessInfo";
 import IdentityVerification from "./IdentityVerification";
 import TranslationSettings from "./TranslationSettings";
-import "../../App.css";
+
 const SessionSetup = ({ onBackToDashboard, onStartInvestigation }) => {
   const [sessionData, setSessionData] = useState({
-    sessionId: "#2024-NV-0043", // Auto-generated
+    sessionId: "#2024-NV-0043",
     witnessData: {
       fullName: "",
       idNumber: "",
@@ -52,7 +52,6 @@ const SessionSetup = ({ onBackToDashboard, onStartInvestigation }) => {
   };
 
   const handleVerifyIdentity = () => {
-    // Add identity verification logic here
     updateIdentityData("isVerified", true);
     alert("Identity verification process started!");
   };
@@ -72,18 +71,14 @@ const SessionSetup = ({ onBackToDashboard, onStartInvestigation }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl mx-auto">
+    <div className="session-setup-container">
+      <div className="session-setup-content">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Create New Investigation Session
-          </h1>
-          <p className="text-gray-600">
+        <div className="session-header">
+          <h1 className="session-title">Create New Investigation Session</h1>
+          <p className="session-id">
             Session ID:{" "}
-            <span className="font-mono text-blue-600">
-              {sessionData.sessionId}
-            </span>{" "}
+            <span className="session-id-code">{sessionData.sessionId}</span>{" "}
             (Auto-generated)
           </p>
         </div>
@@ -106,18 +101,15 @@ const SessionSetup = ({ onBackToDashboard, onStartInvestigation }) => {
         />
 
         {/* Action Buttons */}
-        <div className="flex justify-between mt-8">
-          <button
-            onClick={onBackToDashboard}
-            className="flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition duration-200"
-          >
+        <div className="action-buttons">
+          <button onClick={onBackToDashboard} className="btn btn-outline">
             <ArrowLeft size={18} />
             Back to Dashboard
           </button>
 
           <button
             onClick={handleStartInvestigation}
-            className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-200"
+            className="btn btn-primary"
           >
             Continue to investigation
             <ArrowRight size={18} />

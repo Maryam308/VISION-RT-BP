@@ -24,22 +24,21 @@ const IdentityVerification = ({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-      <h2 className="text-xl font-semibold text-gray-900 mb-4">
-        Identity Verification
-      </h2>
+    <div className="session-card">
+      <h2 className="card-title">Identity Verification</h2>
 
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Reference Photo *
-          </label>
-          <p className="text-sm text-gray-600 mb-4">
+          <label className="form-label">Reference Photo *</label>
+          <p className="form-description">
             Upload official ID photo for real-time identity verification during
             the investigation
           </p>
 
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition duration-200">
+          <div
+            className="file-upload-area"
+            onClick={() => fileInputRef.current?.click()}
+          >
             <input
               type="file"
               ref={fileInputRef}
@@ -48,32 +47,24 @@ const IdentityVerification = ({
               className="hidden"
             />
 
-            <Upload className="mx-auto h-12 w-12 text-gray-400 mb-3" />
-            <p className="text-sm text-gray-600 mb-2">
+            <div className="upload-icon">📁</div>
+            <p className="upload-text">
               Upload a reference photo and enter witness name to verify identity
             </p>
 
-            <button
-              onClick={() => fileInputRef.current?.click()}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-200"
-            >
-              Upload Photo
-            </button>
-            <p className="text-xs text-gray-500 mt-2">JPG, PNG</p>
+            <button className="upload-button">Upload Photo</button>
+            <p className="file-types">JPG, PNG</p>
 
             {identityData.referencePhoto && (
-              <div className="mt-3 flex items-center justify-center gap-2 text-green-600">
+              <div className="upload-success">
                 <CheckCircle size={16} />
-                <span className="text-sm">Photo uploaded successfully</span>
+                <span>Photo uploaded successfully</span>
               </div>
             )}
           </div>
         </div>
 
-        <button
-          onClick={handleVerifyClick}
-          className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition duration-200"
-        >
+        <button onClick={handleVerifyClick} className="btn-success">
           Verify Identity
         </button>
       </div>

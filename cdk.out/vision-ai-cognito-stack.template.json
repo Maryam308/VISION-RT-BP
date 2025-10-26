@@ -1,0 +1,211 @@
+{
+ "Description": "Cognito User Pool for Login and Signup",
+ "Resources": {
+  "visionaiUserPoolB46A02F2": {
+   "Type": "AWS::Cognito::UserPool",
+   "Properties": {
+    "AccountRecoverySetting": {
+     "RecoveryMechanisms": [
+      {
+       "Name": "verified_email",
+       "Priority": 1
+      }
+     ]
+    },
+    "AdminCreateUserConfig": {
+     "AllowAdminCreateUserOnly": false
+    },
+    "AliasAttributes": [
+     "email"
+    ],
+    "AutoVerifiedAttributes": [
+     "email"
+    ],
+    "EmailVerificationMessage": "The verification code to your new account is {####}",
+    "EmailVerificationSubject": "Verify your new account",
+    "Policies": {
+     "PasswordPolicy": {
+      "MinimumLength": 8,
+      "RequireLowercase": true,
+      "RequireNumbers": true,
+      "RequireSymbols": true,
+      "RequireUppercase": true
+     }
+    },
+    "Schema": [
+     {
+      "Mutable": true,
+      "Name": "email",
+      "Required": true
+     }
+    ],
+    "SmsVerificationMessage": "The verification code to your new account is {####}",
+    "UserPoolName": "vision-ai-users",
+    "UserPoolTags": {
+     "ManagedBy": "CDK",
+     "Project": "VisionAI"
+    },
+    "VerificationMessageTemplate": {
+     "DefaultEmailOption": "CONFIRM_WITH_CODE",
+     "EmailMessage": "The verification code to your new account is {####}",
+     "EmailSubject": "Verify your new account",
+     "SmsMessage": "The verification code to your new account is {####}"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "vision-ai-cognito-stack/vision-aiUserPool/Resource"
+   }
+  },
+  "visionaiUserPoolvisionaiAppClient467F89D0": {
+   "Type": "AWS::Cognito::UserPoolClient",
+   "Properties": {
+    "AllowedOAuthFlows": [
+     "implicit",
+     "code"
+    ],
+    "AllowedOAuthFlowsUserPoolClient": true,
+    "AllowedOAuthScopes": [
+     "email",
+     "openid",
+     "profile"
+    ],
+    "CallbackURLs": [
+     "http://localhost:3000",
+     "http://localhost:3000/callback"
+    ],
+    "ClientName": "vision-ai-react-client",
+    "ExplicitAuthFlows": [
+     "ALLOW_USER_PASSWORD_AUTH",
+     "ALLOW_USER_SRP_AUTH",
+     "ALLOW_REFRESH_TOKEN_AUTH"
+    ],
+    "GenerateSecret": false,
+    "LogoutURLs": [
+     "http://localhost:3000",
+     "http://localhost:3000/logout"
+    ],
+    "PreventUserExistenceErrors": "ENABLED",
+    "SupportedIdentityProviders": [
+     "COGNITO"
+    ],
+    "UserPoolId": {
+     "Ref": "visionaiUserPoolB46A02F2"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "vision-ai-cognito-stack/vision-aiUserPool/vision-aiAppClient/Resource"
+   }
+  },
+  "visionaiUserPoolvisionaiDomainD66BC2B1": {
+   "Type": "AWS::Cognito::UserPoolDomain",
+   "Properties": {
+    "Domain": "vision-ai-128663321866",
+    "UserPoolId": {
+     "Ref": "visionaiUserPoolB46A02F2"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "vision-ai-cognito-stack/vision-aiUserPool/vision-aiDomain/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/3WT32/TMBDH/5b5EaWBFQmJvlVdh5AmqBaVF4Qmx7lkxxxfOJ/blSr/O07SpKWIp9j363v3OWeezue36bsbvfczU7zMLObpMRNtXpJoejJUORRKj1sPvCGy349KG0PBySMY2gEf1GKeKB2EvgFjGa9HBbVGqxbCAdpENdr7PXGxIYum99foHsBV8qwW6o1KFMOvgAx3WKH4IW8yPtAe2GgPV/bsUOdkr6O3TXMZ3XaOmnbajuKqAC9Mh6jqwZYZVm7brJ3OLRRjLR+Nn93SYqzjr+ZJVIgknK7PCl60KzQXSxHGPEif0w6BHbIvfXActP2RrEo3kkzGw8oiOIlgx4QTlcj0+d7Svm9BFxFan3GiqRaltv7Uz9l47jHjZmqxAgesBTIwDDKl0jJ0Ozgqo63N48633BHt1ctJOcYQ428tSG5FBXxi7WRUwrqJYFGuHFHTUkVBLip6Qw0Ml+5VMOzi2N1I61f0As7AmpnYXw5x5vMfioNzYnlHcVXuX5andzy4u6mK/rRhKPF1KPt33SGy7UxfgzRB2mRziCDc2/fpx/TDzU+POOP4G2AN6ePw/QM75vN3TAMAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "vision-ai-cognito-stack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "UserPoolId": {
+   "Description": "The ID of the Cognito User Pool",
+   "Value": {
+    "Ref": "visionaiUserPoolB46A02F2"
+   },
+   "Export": {
+    "Name": "vision-aiUserPoolId"
+   }
+  },
+  "UserPoolClientId": {
+   "Description": "The ID of the User Pool App Client",
+   "Value": {
+    "Ref": "visionaiUserPoolvisionaiAppClient467F89D0"
+   },
+   "Export": {
+    "Name": "vision-aiUserPoolClientId"
+   }
+  },
+  "AwsRegion": {
+   "Description": "The AWS Region where Cognito is deployed",
+   "Value": "us-east-1",
+   "Export": {
+    "Name": "vision-aiRegion"
+   }
+  },
+  "CognitoDomain": {
+   "Description": "The Cognito Domain for hosted UI",
+   "Value": {
+    "Ref": "visionaiUserPoolvisionaiDomainD66BC2B1"
+   },
+   "Export": {
+    "Name": "vision-aiCognitoDomain"
+   }
+  },
+  "HostedUIUrl": {
+   "Description": "The Hosted UI URL",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "visionaiUserPoolvisionaiDomainD66BC2B1"
+      },
+      ".auth.us-east-1.amazoncognito.com"
+     ]
+    ]
+   },
+   "Export": {
+    "Name": "vision-aiHostedUIUrl"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

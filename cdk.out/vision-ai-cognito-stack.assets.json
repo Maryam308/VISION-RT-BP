@@ -1,0 +1,21 @@
+{
+  "version": "48.0.0",
+  "files": {
+    "7623f3dd7ab2e23bb1918cce37f83dd8c20d6b77cbc7a3987912d859912b3e0e": {
+      "displayName": "vision-ai-cognito-stack Template",
+      "source": {
+        "path": "vision-ai-cognito-stack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "128663321866-us-east-1-ad46c74c": {
+          "bucketName": "cdk-hnb659fds-assets-128663321866-us-east-1",
+          "objectKey": "7623f3dd7ab2e23bb1918cce37f83dd8c20d6b77cbc7a3987912d859912b3e0e.json",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::128663321866:role/cdk-hnb659fds-file-publishing-role-128663321866-us-east-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
